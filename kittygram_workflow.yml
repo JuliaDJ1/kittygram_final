@@ -78,11 +78,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/kittygram
-            docker compose -f docker-compose.production.yml pull
-            docker compose -f docker-compose.production.yml up -d
-            docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate --noinput || true
-            docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput --clear || true
+  cd ~/kittygram
+  docker compose -f docker-compose.production.yml up -d db backend
+  docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate --noinput || true
+  docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput --clear || true
+  docker compose -f docker-compose.production.yml up -d frontend gateway
       - name: Send Telegram notification
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage \
