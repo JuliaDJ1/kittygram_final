@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 volumes:
   pg_data:
   static:
@@ -10,7 +10,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    image: evingb/kittygram_backend
+    image: evingb/kittygram_backend:latest
     env_file: .env
     volumes:
       - static:/static
@@ -18,14 +18,12 @@ services:
     depends_on:
       - db
   frontend:
-    image: evingb/kittygram_frontend
-    env_file: .env
+    image: evingb/kittygram_frontend:latest
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    image: evingb/kittygram_gateway
-    env_file: .env
+    image: evingb/kittygram_gateway:latest
     ports:
       - "9000:80"
     volumes:

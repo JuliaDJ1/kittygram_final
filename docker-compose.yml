@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 volumes:
   pg_data:
   static:
@@ -18,14 +18,12 @@ services:
     depends_on:
       - db
   frontend:
-    env_file: .env
     build: ./frontend/
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
     build: ./nginx/
-    env_file: .env
     ports:
       - "9000:80"
     volumes:
