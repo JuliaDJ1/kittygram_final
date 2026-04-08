@@ -39,7 +39,7 @@ jobs:
         run: cd frontend && npm test -- --watchAll=false
 
   build_and_push:
-    # needs: tests   ← закомментировали, чтобы образы собрались даже если тесты падают
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
           tags: evingb/kittygram_gateway:latest
 
   deploy:
-    # needs: build_and_push   ← закомментировали, чтобы деплой прошёл
+    needs: build_and_push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to server
@@ -80,9 +80,10 @@ jobs:
           script: |
             cd ~/kittygram
             docker compose -f docker-compose.production.yml pull
-            docker compose -f docker-compose.production.yml up -d
+            docker compose -f docker-compose.production.yml up -d db backend
             docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate --noinput || true
             docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput --clear || true
+            docker compose -f docker-compose.production.yml up -d frontend gateway
       - name: Send Telegram notification
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage \
