@@ -10,7 +10,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: ./backend/
+    image: evingb/kittygram_backend
     env_file: .env
     volumes:
       - static:/static
@@ -18,13 +18,13 @@ services:
     depends_on:
       - db
   frontend:
+    image: evingb/kittygram_frontend
     env_file: .env
-    build: ./frontend/
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    build: ./nginx/
+    image: evingb/kittygram_gateway
     env_file: .env
     ports:
       - "9000:80"
