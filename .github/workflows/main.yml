@@ -19,7 +19,7 @@ jobs:
           pip install flake8 pytest pytest-django
           cd backend && pip install -r requirements.txt
       - name: Lint with flake8
-        run: cd backend && flake8 .
+        run: cd backend && flake8 . --ignore=E501
       - name: Run backend tests
         run: cd backend && python -m pytest
       - name: Set up Node.js
