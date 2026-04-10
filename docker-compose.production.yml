@@ -24,6 +24,9 @@ services:
       - static:/static
   gateway:
     image: evingb/kittygram_gateway:latest
+    depends_on:
+      - backend
+      - frontend
     ports:
       - "9000:80"
     volumes:
