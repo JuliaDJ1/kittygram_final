@@ -24,4 +24,4 @@ docker compose up --build
 
 ## Автор проекта
 
-Вадим Гусейнов evingb dockerhub
+Вадим Гусейнов evingb
